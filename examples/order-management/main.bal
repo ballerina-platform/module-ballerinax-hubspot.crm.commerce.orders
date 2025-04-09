@@ -115,9 +115,9 @@ function updateOrder(hsorders:Client hubspotClient, string orderId) {
 }
 
 function deleteOrder(hsorders:Client hubspotClient, string orderId){
-    http:Response|error response = hubspotClient->/orders/[orderId].delete();
-    if response is http:Response {
-        io:println("Order deleted successfully with status: ", response.statusCode);
+    error? response = hubspotClient->/orders/[orderId].delete();
+    if response == () {
+        io:println("Order deleted successfully");
     } else {
         io:println("Failed to delete order with ID: " + orderId);
     }
