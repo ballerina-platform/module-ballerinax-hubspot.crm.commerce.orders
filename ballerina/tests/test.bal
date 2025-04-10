@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/http;
 import ballerina/oauth2;
 import ballerina/os;
 import ballerina/test;
@@ -102,8 +101,8 @@ function testPostOrdersBatchRead() returns error? {
 function testDeleteObjectsOrdersByOrderId() returns error? {
     string orderId = "10";
 
-    http:Response response = check orderClient->/[orderId].delete();
-    test:assertTrue(response.statusCode == 204);
+    error? response = orderClient->/[orderId].delete();
+    test:assertTrue(response == ());
 }
 
 @test:Config {
@@ -284,6 +283,6 @@ function testPostOrdersBatchArchive() returns error? {
             }
         ]
     };
-    http:Response response = check orderClient->/batch/archive.post(payload = payload);
-    test:assertTrue(response.statusCode == 204);
+    error? response = orderClient->/batch/archive.post(payload = payload);
+    test:assertTrue(response == ());
 }
