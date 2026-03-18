@@ -2,7 +2,14 @@
 
 [HubSpot](https://www.hubspot.com) is an AI-powered customer relationship management (CRM) platform.
 
-The `ballerinax/hubspot.crm.commerce.orders` package offers APIs to connect and interact with [HubSpot API for CRM Commerce Orders](https://developers.hubspot.com/docs/reference/api/crm/commerce/orders) endpoints, specifically based on [HubSpot CRM Commerce Orders REST API](https://developers.hubspot.com/docs/reference/api).
+The HubSpot connector offers APIs to connect and interact with [HubSpot API for CRM Commerce Orders](https://developers.hubspot.com/docs/reference/api/crm/commerce/orders) endpoints, specifically based on [HubSpot CRM Commerce Orders REST API](https://developers.hubspot.com/docs/reference/api).
+
+### Key Features
+
+- Create, read, update, and delete order records in HubSpot CRM
+- Batch operations for bulk order management
+- Search orders with filtering support
+- Manage order associations with other CRM objects
 
 ## Setup guide
 
