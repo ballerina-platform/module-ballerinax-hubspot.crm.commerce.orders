@@ -39,7 +39,7 @@ public isolated client class Client {
         self.clientEp = check new (serviceUrl, httpClientConfig);
     }
 
-    # Read a batch of orders by internal ID, or unique property values
+    # Read a batch of orders by ID
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
@@ -58,8 +58,9 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # Read
+    # Retrieve an order by ID
     #
+    # + orderId - The unique identifier of the order to retrieve.
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
@@ -75,8 +76,9 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Archive
+    # Archive an order by ID
     #
+    # + orderId - The unique identifier of the order to delete.
     # + headers - Headers to be sent with the request 
     # + return - No content 
     resource isolated function delete [string orderId](map<string|string[]> headers = {}) returns error? {
@@ -89,8 +91,9 @@ public isolated client class Client {
         return self.clientEp->delete(resourcePath, headers = httpHeaders);
     }
 
-    # Update
+    # Update an order by ID
     #
+    # + orderId - The unique identifier of the order to update.
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
@@ -159,7 +162,7 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # List
+    # List all orders
     #
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
@@ -176,7 +179,7 @@ public isolated client class Client {
         return self.clientEp->get(resourcePath, httpHeaders);
     }
 
-    # Create
+    # Create a new order
     #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
@@ -193,7 +196,7 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
-    # Create or update a batch of orders by unique property values
+    # Upsert orders by property values
     #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
@@ -210,6 +213,8 @@ public isolated client class Client {
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }
 
+    # Search orders
+    #
     # + headers - Headers to be sent with the request 
     # + return - successful operation 
     resource isolated function post search(PublicObjectSearchRequest payload, map<string|string[]> headers = {}) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
