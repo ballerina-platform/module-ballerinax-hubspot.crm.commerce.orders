@@ -1,6 +1,6 @@
 _Author_: @roshanemoraes
 _Created_: 2024/12/18
-_Updated_: 2026/06/17 \\
+_Updated_: 2026/06/17 \
 _Edition_: Swan Lake
 
 # Sanitation for OpenAPI specification
