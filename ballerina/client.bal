@@ -23,7 +23,7 @@ import ballerina/http;
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig? apiKeyConfig;
-    # Gets invoked to initialize the `connector`.
+    # Gets invoked to initialize the `connector`
     #
     # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -60,7 +60,7 @@ public isolated client class Client {
 
     # Retrieve an order by ID
     #
-    # + orderId - The unique identifier of the order to retrieve.
+    # + orderId - The unique identifier of the order to retrieve
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
@@ -78,7 +78,7 @@ public isolated client class Client {
 
     # Archive an order by ID
     #
-    # + orderId - The unique identifier of the order to delete.
+    # + orderId - The unique identifier of the order to delete
     # + headers - Headers to be sent with the request 
     # + return - No content 
     resource isolated function delete [string orderId](map<string|string[]> headers = {}) returns error? {
@@ -93,7 +93,7 @@ public isolated client class Client {
 
     # Update an order by ID
     #
-    # + orderId - The unique identifier of the order to update.
+    # + orderId - The unique identifier of the order to update
     # + headers - Headers to be sent with the request 
     # + queries - Queries to be sent with the request 
     # + return - successful operation 
