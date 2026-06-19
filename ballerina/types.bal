@@ -19,14 +19,23 @@
 
 import ballerina/http;
 
+# Standard error response structure returned by the Orders API
 public type StandardError record {
+    # Optional sub-category providing additional error classification
     record {} subCategory?;
+    # Contextual metadata map with string array values for the error
     record {|string[]...;|} context;
+    # Map of relevant links associated with the error response
     record {|string...;|} links;
+    # Unique identifier for the error instance
     string id?;
+    # High-level category classifying the type of error
     string category;
+    # Human-readable message describing the error
     string message;
+    # List of detailed error objects providing granular error info
     ErrorDetail[] errors;
+    # HTTP status code or status string associated with the error
     string status;
 };
 
@@ -44,8 +53,11 @@ public type GetCrmV3ObjectsOrdersOrderIdQueries record {
     string[] properties?;
 };
 
+# Paginated collection of associated object IDs
 public type CollectionResponseAssociatedId record {
+    # Pagination object containing cursors for navigating to the next or previous result page
     Paging paging?;
+    # Array of associated object IDs returned in the response
     AssociatedId[] results;
 };
 
@@ -65,24 +77,37 @@ public type GetCrmV3ObjectsOrdersQueries record {
     string[] properties?;
 };
 
+# Defines association targets and their types for a given object
 public type PublicAssociationsForObject record {
+    # List of association type specifications for the relationship
     AssociationSpec[] types;
+    # Represents a public object identifier containing a unique ID string
     PublicObjectId to;
 };
 
+# Batch operation response containing results and processing status
 public type BatchResponseSimplePublicObject record {
+    # Timestamp indicating when the batch operation completed
     string completedAt;
+    # Timestamp indicating when the batch operation was requested
     string requestedAt?;
+    # Timestamp indicating when the batch operation started processing
     string startedAt;
+    # Map of relevant links associated with the batch response
     record {|string...;|} links?;
+    # Array of order objects returned by the batch operation
     SimplePublicObject[] results;
+    # Current processing status of the batch request
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# A logical grouping of filters applied together when searching orders
 public type FilterGroup record {
+    # Array of filter conditions within this group
     Filter[] filters;
 };
 
+# Detailed information about a specific error encountered during a request
 public type ErrorDetail record {
     # A specific category that contains more specific detail about the error
     string subCategory?;
@@ -96,51 +121,85 @@ public type ErrorDetail record {
     string message;
 };
 
+# Pagination metadata for forward-only cursor-based navigation
 public type ForwardPaging record {
+    # Pagination cursor details for retrieving the next page of results
     NextPage next?;
 };
 
+# A minimal object representation containing only a unique identifier
 public type SimplePublicObjectId record {
+    # The unique identifier of the object
     string id;
 };
 
+# Batch upsert response including results, errors, and processing status details
 public type BatchResponseSimplePublicUpsertObjectWithErrors record {
+    # Timestamp when the batch operation completed
     string completedAt;
+    # Total number of errors encountered during the batch operation
     int:Signed32 numErrors?;
+    # Timestamp when the batch operation was requested
     string requestedAt?;
+    # Timestamp when the batch operation began processing
     string startedAt;
+    # Map of relevant hyperlinks associated with the batch response
     record {|string...;|} links?;
+    # Array of successfully upserted order objects
     SimplePublicUpsertObject[] results;
+    # Array of errors encountered for individual records in the batch
     StandardError[] errors?;
+    # Current processing status of the batch upsert request
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# Input payload for batch reading orders by ID, including requested properties
 public type BatchReadInputSimplePublicObjectId record {
+    # List of properties for which historical values should be returned
     string[] propertiesWithHistory;
+    # The property to use as the unique identifier for lookup
     string idProperty?;
+    # List of object IDs to retrieve in the batch read
     SimplePublicObjectId[] inputs;
+    # List of property names to include in the response
     string[] properties;
 };
 
+# Response object containing the status, timing, and results of a batch upsert operation
 public type BatchResponseSimplePublicUpsertObject record {
+    # Timestamp indicating when the batch operation completed
     string completedAt;
+    # Timestamp indicating when the batch operation was requested
     string requestedAt?;
+    # Timestamp indicating when the batch operation started
     string startedAt;
+    # Map of relevant links associated with the batch response
     record {|string...;|} links?;
+    # List of upserted objects returned by the batch operation
     SimplePublicUpsertObject[] results;
+    # Current processing status of the batch operation
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# A property value paired with its source metadata and the timestamp of the last update
 public type ValueWithTimestamp record {
+    # Identifier of the source that set this value
     string sourceId?;
+    # Type of source that originated this value
     string sourceType;
+    # Human-readable label describing the value's source
     string sourceLabel?;
+    # ID of the user who last updated this value
     int:Signed32 updatedByUserId?;
+    # The property value as a string
     string value;
+    # Timestamp indicating when the value was last updated
     string timestamp;
 };
 
+# Input schema containing a list of object IDs for a batch operation
 public type BatchInputSimplePublicObjectId record {
+    # List of object IDs to process in the batch operation
     SimplePublicObjectId[] inputs;
 };
 
@@ -157,30 +216,44 @@ public type PostCrmV3ObjectsOrdersBatchReadQueries record {
     boolean archived = false;
 };
 
+# Input schema containing a list of objects to create or update in a batch upsert operation
 public type BatchInputSimplePublicObjectBatchInputUpsert record {
+    # Array of order objects to upsert in batch
     SimplePublicObjectBatchInputUpsert[] inputs;
 };
 
+# A paginated collection of order objects with a total count and forward paging cursor
 public type CollectionResponseWithTotalSimplePublicObjectForwardPaging record {
+    # Total number of orders matching the request
     int:Signed32 total;
+    # Pagination metadata for forward-only cursor-based navigation
     ForwardPaging paging?;
+    # Array of order objects returned in the current page
     SimplePublicObject[] results;
 };
 
+# Represents a single order object with its properties, metadata, and optional history
 public type SimplePublicObject record {
+    # Timestamp when the order was created
     string createdAt;
+    # Indicates whether the order is archived
     boolean archived?;
+    # Timestamp when the order was archived
     string archivedAt?;
+    # Map of order properties including their historical values with timestamps
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # Unique identifier of the order object
     string id;
+    # Map of order property names to their current values
     record {|string?...;|} properties;
+    # Timestamp when the order was last updated
     string updatedAt;
 };
 
-# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
-    # Provides Auth configurations needed when communicating with a remote HTTP endpoint.
+    # Provides Auth configurations needed when communicating with a remote HTTP endpoint
     http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
     # The HTTP version understood by the client
     http:HttpVersion httpVersion = http:HTTP_2_0;
@@ -217,69 +290,113 @@ public type ConnectionConfig record {|
     # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
     boolean validation = true;
     # Enables relaxed data binding on the client side. When enabled, `nil` values are treated as optional, 
-    # and absent fields are handled as `nilable` types. Enabled by default.
+    # and absent fields are handled as `nilable` types. Enabled by default
     boolean laxDataBinding = true;
 |};
 
+# Represents a public object identifier containing a unique ID string
 public type PublicObjectId record {
+    # Unique identifier of the public object
     string id;
 };
 
+# Pagination object containing cursors for navigating to the next or previous result page
 public type Paging record {
+    # Pagination cursor details for retrieving the next page of results
     NextPage next?;
+    # Pagination cursor details for navigating to the previous page of results
     PreviousPage prev?;
 };
 
+# Request payload for searching orders with filters, sorting, and pagination options
 public type PublicObjectSearchRequest record {
+    # Full-text search query string to match against order records
     string query?;
+    # Maximum number of results to return in the response
     int:Signed32 'limit?;
+    # Cursor token for retrieving the next page of results
     string after?;
+    # List of property names to sort results by
     string[] sorts?;
+    # List of property names to include in the response
     string[] properties?;
+    # Groups of filters to apply when narrowing search results
     FilterGroup[] filterGroups?;
 };
 
+# Input object for upserting an order, containing an identifier and a map of property values
 public type SimplePublicObjectBatchInputUpsert record {
+    # The property name used as the unique identifier for the upsert
     string idProperty?;
+    # Trace identifier for tracking the write operation
     string objectWriteTraceId?;
+    # The unique identifier of the order to upsert
     string id;
+    # Key-value map of order property names and their values
     record {|string...;|} properties;
 };
 
+# Batch operation response containing results, status, timestamps, and any errors encountered
 public type BatchResponseSimplePublicObjectWithErrors record {
+    # Timestamp indicating when the batch operation completed
     string completedAt;
+    # Total number of errors encountered during the batch operation
     int:Signed32 numErrors?;
+    # Timestamp indicating when the batch operation was requested
     string requestedAt?;
+    # Timestamp indicating when the batch operation started processing
     string startedAt;
+    # Map of relevant link names to associated URIs for the response
     record {|string...;|} links?;
+    # List of successfully processed order objects from the batch
     SimplePublicObject[] results;
+    # List of errors encountered for individual records in the batch
     StandardError[] errors?;
+    # Current processing status of the batch operation
     "PENDING"|"PROCESSING"|"CANCELED"|"COMPLETE" status;
 };
 
+# Input schema for creating or updating an order object with properties and associations
 public type SimplePublicObjectInput record {
+    # Trace identifier for tracking the write operation
     string objectWriteTraceId?;
+    # Key-value map of order property names and their string values
     record {|string...;|} properties;
 };
 
+# Paginated collection of order objects including their associated records
 public type CollectionResponseSimplePublicObjectWithAssociationsForwardPaging record {
+    # Pagination metadata for forward-only cursor-based navigation
     ForwardPaging paging?;
+    # Array of order objects returned in the current page
     SimplePublicObjectWithAssociations[] results;
 };
 
+# Defines the category and type of an association between two objects
 public type AssociationSpec record {
+    # Category of the association: HUBSPOT_DEFINED, USER_DEFINED, or INTEGRATOR_DEFINED
     "HUBSPOT_DEFINED"|"USER_DEFINED"|"INTEGRATOR_DEFINED" associationCategory;
+    # Numeric identifier for the specific association type
     int:Signed32 associationTypeId;
 };
 
+# An order object including its properties, metadata, and associated records
 public type SimplePublicObjectWithAssociations record {
+    # Map of associated object collections keyed by association type
     record {|CollectionResponseAssociatedId...;|} associations?;
+    # Timestamp when the order record was created
     string createdAt;
+    # Indicates whether the order record is archived
     boolean archived?;
+    # Timestamp when the order record was archived
     string archivedAt?;
+    # Map of property names to their historical values with timestamps
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # Unique identifier of the order record
     string id;
+    # Key-value map of the order's current property names and values
     record {|string?...;|} properties;
+    # Timestamp when the order record was last updated
     string updatedAt;
 };
 
@@ -289,64 +406,100 @@ public type PatchCrmV3ObjectsOrdersOrderIdQueries record {
     string idProperty?;
 };
 
+# Defines a filter condition using a property, operator, and comparison value
 public type Filter record {
+    # Upper bound value used with the BETWEEN operator
     string highValue?;
+    # The name of the property to filter by
     string propertyName;
+    # A list of values to match against the filter property
     string[] values?;
+    # The single value to match against the filter property
     string value?;
-    # null
+    # The comparison operator used to evaluate the filter condition
     "EQ"|"NEQ"|"LT"|"LTE"|"GT"|"GTE"|"BETWEEN"|"IN"|"NOT_IN"|"HAS_PROPERTY"|"NOT_HAS_PROPERTY"|"CONTAINS_TOKEN"|"NOT_CONTAINS_TOKEN" operator;
 };
 
+# Pagination cursor details for navigating to the previous page of results
 public type PreviousPage record {
+    # The cursor token representing the start of the previous page
     string before;
+    # The URL link to retrieve the previous page of results
     string link?;
 };
 
+# A batch input wrapper containing an array of objects to create
 public type BatchInputSimplePublicObjectInputForCreate record {
+    # An array of objects to be created in the batch operation
     SimplePublicObjectInputForCreate[] inputs;
 };
 
+# A batch input wrapper containing an array of objects to update
 public type BatchInputSimplePublicObjectBatchInput record {
+    # An array of objects to be updated in the batch operation
     SimplePublicObjectBatchInput[] inputs;
 };
 
+# Represents an order object returned after an upsert operation, including metadata and property values
 public type SimplePublicUpsertObject record {
+    # The timestamp when the object was created
     string createdAt;
+    # Indicates whether the object is archived
     boolean archived?;
+    # The timestamp when the object was archived
     string archivedAt?;
+    # Indicates whether the object was newly created by the upsert
     boolean 'new;
+    # A map of property names to their historical values with timestamps
     record {|ValueWithTimestamp[]...;|} propertiesWithHistory?;
+    # The unique identifier of the object
     string id;
+    # A map of property names to their current string values
     record {|string...;|} properties;
+    # The timestamp when the object was last updated
     string updatedAt;
 };
 
+# Input schema for updating a single order in a batch operation
 public type SimplePublicObjectBatchInput record {
+    # The property name used as the unique identifier for the order
     string idProperty?;
+    # Trace ID for tracking the write operation
     string objectWriteTraceId?;
+    # The unique identifier of the order to update
     string id;
+    # Key-value pairs of order properties to update
     record {|string...;|} properties;
 };
 
+# Pagination cursor details for retrieving the next page of results
 public type NextPage record {
+    # The URL query string to fetch the next page of results
     string link?;
+    # The cursor token used to retrieve the next page of results
     string after;
 };
 
+# Represents an associated object's ID and association type
 public type AssociatedId record {
+    # The unique identifier of the associated object
     string id;
+    # The type of association between the objects
     string 'type;
 };
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+# Provides API key configurations needed when communicating with a remote HTTP endpoint
 public type ApiKeysConfig record {|
     string privateAppLegacy;
     string privateApp;
 |};
 
+# Input schema for creating a new order with properties and associations
 public type SimplePublicObjectInputForCreate record {
+    # List of associated objects to link to the new order
     PublicAssociationsForObject[] associations;
+    # Trace ID for tracking the write operation
     string objectWriteTraceId?;
+    # Key-value pairs of order properties to set on creation
     record {|string...;|} properties;
 };
